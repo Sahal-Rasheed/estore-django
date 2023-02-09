@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+
+    <!-- ============================ COMPONENT REGISTER   ================================= -->
+        <div class="card mx-auto" style="max-width:580px; margin-top:25px;">
+          <article class="card-body shadow">
+            <!-- messages rendering -->
+            <header class="mb-4"><h4 class="card-title">Sign up</h4></header>
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                            <div class="alert alert-success alert-dismissible">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>{{message}}</strong>
+                            </div>
+                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                            <div class="alert alert-danger alert-dismissible">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>{{message}}</strong>
+                            </div>
+                        {% else %}
+                        <div></div>
+                        {% endif%}
+                    {% endfor %}
+                {% endif %}
+                <form action="{% url 'registration' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col form-group">
+                            <label>First name</label>
+                                {{form.first_name}}
+                        </div> <!-- form-group end.// -->
+                        <div class="col form-group">
+                            <label>Last name</label>
+                                {{form.last_name}}
+                        </div> <!-- form-group end.// -->
+                    </div> <!-- form-row end.// -->
+                    <div class="form-row">
+                        <div class="col form-group">
+                            <label>Email</label>
+                                {{form.email}}
+                        </div> <!-- form-group end.// -->
+                        <div class="col form-group">
+                            <label>Phone Number</label>
+                                {{form.phone_number}}
+                        </div> <!-- form-group end.// -->
+                    </div> <!-- form-row end.// -->
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Create password</label>
+                                {{form.password}}
+                            <!-- <input class="form-control" type="password"> -->
+                        </div> <!-- form-group end.// --> 
+                        <div class="form-group col-md-6">
+                            <label>Repeat password</label>
+                                {{form.confirm_password}}
+                            <!-- <input class="form-control" type="password"> -->
+                        </div> <!-- form-group end.// -->  
+                    </div>
+
+                    <!-- form validation errors rendering to template -->
+                    {% if form.errors %}
+                    {% for field in form %}
+                    {% for error in field.errors %}
+                    <div class="alert alert-warning alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{error}}</strong>
+                    </div>
+                    {% endfor %}
+                    {% endfor %}
+                    {% endif %}
+                        
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn btn-success btn-block"><i class="fa fa-user-plus"></i>&emsp13;Register</button>
+                    </div> <!-- form-group// -->     
+                    
+                </form>
+            </article><!-- card-body.// -->
+        </div> <!-- card .// -->
+        <p class="text-center mt-4">Have an account? <a href="{% url 'login' %}">Log In</a></p>
+        <br><br>
+    <!-- ============================ COMPONENT REGISTER  END.// ================================= -->
+    
+    
+    </section>
+    <!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock content %}

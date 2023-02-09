@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y" style="min-height:84vh">
+
+    <!-- ============================ COMPONENT LOGIN   ================================= -->
+        <div class="card mx-auto shadow" style="max-width: 380px; margin-top:90px;">
+          <div class="card-body">
+            <p class="text-info"><strong>Please enter the phone number you have registered while creating your account.</strong></p>
+            <h4 class="card-title mb-4">Enter Phone Number</h4>
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                            <div class="alert alert-success alert-dismissible">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>{{message}}</strong>
+                            </div>
+                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                            <div class="alert alert-danger alert-dismissible">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>{{message}}</strong>
+                            </div>
+                        {% else %}
+                        <div></div>
+                        {% endif%}
+                    {% endfor %}
+                {% endif %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="number" class="form-control" placeholder="Enter Phone Number" name="phone_number" required>
+                    </div> <!-- form-group// -->
+                   
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-block"><i class="fa fa-check"></i>&emsp13; Submit </button>
+                    </div> <!-- form-group// -->    
+                </form>
+          </div> <!-- card-body.// -->
+        </div> <!-- card .// -->
+    <!-- ============================ COMPONENT LOGIN  END.// ================================= -->
+    
+    
+    </section>
+    <!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock content %}
+

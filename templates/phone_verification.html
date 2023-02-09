@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y" style="min-height:84vh">
+
+    <!-- ============================ COMPONENT LOGIN   ================================= -->
+        <div class="card mx-auto" style="max-width: 380px; margin-top:90px;">
+          <div class="card-body shadow">
+            <p>To activate your account please enter the verification code we've sent you on your phone number <strong>+91 {{userph}}</strong></p>
+            <h4 class="card-title mb-4">Enter OTP</h4>
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                            <div class="alert alert-success alert-dismissible">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>{{message}}</strong>
+                            </div>
+                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                            <div class="alert alert-danger alert-dismissible">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>{{message}}</strong>
+                            </div>
+                        {% else %}
+                        <div></div>
+                        {% endif%}
+                    {% endfor %}
+                {% endif %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="number" class="form-control" placeholder="Enter OTP recieved" name="otp" required>
+                    </div> <!-- form-group// -->
+                   
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success btn-block"><i class="fa fa-check"></i>&emsp13; Verify </button>
+                    </div> <!-- form-group// -->    
+                </form>
+          </div> <!-- card-body.// -->
+        </div> <!-- card .// -->
+    <!-- ============================ COMPONENT LOGIN  END.// ================================= -->
+    
+    
+    </section>
+    <!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock content %}
+

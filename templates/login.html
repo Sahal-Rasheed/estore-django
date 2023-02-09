@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y" style="min-height:84vh">
+
+    <!-- ============================ COMPONENT LOGIN   ================================= -->
+        <div class="card mx-auto" style="max-width: 380px; margin-top:90px;">
+          <div class="card-body shadow">
+          <h4 class="card-title mb-4">Sign in</h4>
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                        <div class="alert alert-success alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>{{message}}</strong>
+                        </div>
+                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                        <div class="alert alert-danger alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>{{message}}</strong>
+                        </div>
+                    {% else %}
+                    <div></div>
+                    {% endif%}
+                {% endfor %}
+            {% endif %}
+            <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="email" class="form-control" placeholder="Email Address" name="email" required>
+                </div> <!-- form-group// -->
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Password" name="password" required>
+                </div> <!-- form-group// -->
+                
+                <div class="form-group">
+                    <a href="#" class="float-right">Forgot password?</a> 
+                
+                </div> <!-- form-group form-check .// -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-block"><i class="fa fa-user"></i>&emsp13; Login </button>
+                    <a href="{% url 'otplogin' %}" class="btn btn-block btn-dark addtocart"> <span class="text"><i class="fa fa-phone"></i>&emsp13; Login with OTP</span></a>
+
+                </div> <!-- form-group// -->    
+            </form>
+          </div> <!-- card-body.// -->
+        </div> <!-- card .// -->
+    
+         <p class="text-center mt-4">Don't have account? <a href="{% url 'registration' %}">Sign up</a></p>
+         <br><br>
+    <!-- ============================ COMPONENT LOGIN  END.// ================================= -->
+    
+    
+    </section>
+    <!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock content %}
+

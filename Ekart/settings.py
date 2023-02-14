@@ -142,13 +142,21 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT =  os.path.join(BASE_DIR,'media')
 
-
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Twilio Configuration
+
 ACCOUNT_SID=env('ACCOUNT_SID')
 AUTH_TOKEN=env('AUTH_TOKEN')
 SERVICES=env('SERVICES')
+
+# SMTP Configuration
+
+EMAIL_HOST = 'smtp.gmail.com'  
+EMAIL_PORT = 587  
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')  
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD') 
+EMAIL_USE_TLS = True

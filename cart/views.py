@@ -162,23 +162,18 @@ def add_to_wishlist(request,product_id):
             cart_id=_cart_id(request)
         )
         cart.save()
-    
     try:
         wished_pro = Wishlist.objects.create(product=product,cart=cart)
-        # wished_pro.product.in_wishlist = True
-        # wished_pro.product.save()
         wished_pro.save()
         return redirect(wishlist)
     except:
         pass
-    if 'add_to_wishlist' in  request.path:
-        wished_pro = Wishlist.objects.get(product=product,cart=cart)
-        if wished_pro in Wishlist.objects.get(cart=cart):
-            wished_pro.delete()
-            return redirect('')
+    # if 'add_to_wishlist' in  request.path:
+    #     wished_pro = Wishlist.objects.get(product=product,cart=cart)
+    #     if wished_pro in Wishlist.objects.get(cart=cart):
+    #         wished_pro.delete()
+    #         return redirect('')
     
-      
-
 def wishlist(request):
     wishlist=None
     try:
@@ -186,7 +181,6 @@ def wishlist(request):
         wishlist = Wishlist.objects.filter(cart=cart)
     except Cart.DoesNotExist:
         pass
-    
     return render(request, 'wishlist.html', {'wishlist':wishlist})
 
 def remove_from_wishlist(request,product_id):
@@ -194,9 +188,4 @@ def remove_from_wishlist(request,product_id):
     product = get_object_or_404(Product, id=product_id)
     wishlist = Wishlist.objects.get(product=product,cart=cart)
     wishlist.delete()
-    # wishlist.product.in_wishlist = False
-    # wishlist.product.save()
-        
-
-    # cart_item.save()
     return redirect('wishlist')

@@ -18,8 +18,6 @@ def store(request,category_slug=None):
     products=None
     category=None
       
-
-
     if category_slug != None:
         category = get_object_or_404(Category, slug=category_slug)
         products = Product.objects.filter(category=category, is_available=True)
@@ -42,11 +40,9 @@ def store(request,category_slug=None):
     #     # if page is empty then return last page
     #     page_obj = paginator.page(1)
 
-
     context = {
         'products': page_products, 
-        'count':count,
-      
+        'count':count,   
     }
    
     return render(request,'store.html',context)

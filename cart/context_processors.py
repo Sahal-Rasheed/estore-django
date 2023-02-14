@@ -1,5 +1,5 @@
 from .views import _cart_id
-from .models import Cart,CartItem,Wishlist,Product
+from .models import Cart,CartItem,Wishlist
 
 def cart_counter(request):
     cart_counter=0
@@ -29,30 +29,24 @@ def wishlist_counter(request):
                     wishlist_counter += 1
                 else:
                     pass
+
         except Cart.DoesNotExist:
             wishlist_counter=0
     return dict(wishlist_counter=wishlist_counter)
 
 
 def in_wishlist(request):
-    
     if 'admin' in request.path:
         return {}
     else:
         try:
-            products = Product.objects.all()
             cart = Cart.objects.get(cart_id=_cart_id(request))
-            wishlists = Wishlist.objects.all().filter(cart=cart)
-            for product in products:
-                in_wishlist = False
-                for wishlist in wishlists:
-                    if product in wishlist.product:
-                        in_wishlist = True
-                        break
-
+            wishlists = Wishlist.objects.filter(cart=cart)
+            wishlist = []
+            for item in wishlists:
+                wishlist.append(item.product.product_name)
         except Cart.DoesNotExist:
-            in_wishlist = False
-            
-    return dict(in_wishlist=in_wishlist)
+            wishlist = None   
+    return {'wishlist':wishlist}
 
 

@@ -109,7 +109,7 @@
         <div class="col-md-4">
             <figure class="card card-product-grid">
                 <div class="d-flex justify-content-end mt-3 mr-3"> 
-					{% if in_wishlist %}
+					{% if product.product_name in wishlist %}
                         <a href="{% url 'remove_from_wishlist' product.id %}" class="widget-header pl-3 ml-3">
                             <i class="text-danger fa fa-heart fa-lg " aria-hidden="true"></i>
                         </a>

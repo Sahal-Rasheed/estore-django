@@ -7,6 +7,14 @@ from .forms import RegistrationForm
 from twilio.rest import Client
 from django.conf import settings
 
+# Email
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import EmailMessage
+
 # Create your views here.
 
 def register(request):
@@ -152,4 +160,66 @@ def UserLogout(request):
     logout(request)
     messages.success(request, "Logged out successfully!")
     return redirect("login")
+
+def ForgetPassword(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        if Account.objects.filter(email=email).exists():
+            user = Account.objects.get(email__exact=email)
+            current_site = get_current_site(request)
+            email_subject = 'Estore, Password Reset Mail'
+            email_body = render_to_string('password_reset_email.html',{
+                'user'   : user,
+                'domain' : current_site,
+                'uid'    : urlsafe_base64_encode(force_bytes(user.pk)),
+                'token'  : default_token_generator.make_token(user),
+            })
+            to_email = email
+            send_email = EmailMessage(email_subject, email_body, to=[to_email])
+            send_email.send()
+            messages.success(request,'Password reset email has been sent to your email address.')
+            return redirect('login')
+        else:
+            messages.error(request, 'This email does not matches with any account.')
+            return redirect('forgetpassword')
+    return render(request,'forgetpassword.html')
+
+def ResetPasswordValidate(request,uidb64,token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = Account._default_manager.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, Account.DoesNotExist):
+        user =None
+    
+    if user is not None and default_token_generator.check_token(user, token):
+        request.session['uid'] = uid
+        messages.success(request, 'Please reset your password')
+        return redirect('resetpassword')
+    else:
+        messages.error(request, 'This link has been expired!')
+        return redirect('login')
+
+def ResetPassword(request):
+    uid = request.session.get('uid')
+    if 'uid' in request.session:
+        if request.method == 'POST':
+            new_pass = request.POST.get('npass')
+            c_pass = request.POST.get('cpass')
+            if new_pass == c_pass:
+                try:
+                    user = Account.objects.get(pk=uid)
+                    user.set_password(new_pass)
+                    user.save()
+                    messages.success(request, 'Your password has been changed successfully.')
+                    del request.session['uid']
+                    return redirect('login')
+                except Account.DoesNotExist:
+                    return redirect('forgetpassword')
+            else:
+                messages.error(request, 'Password not matching.')
+                return redirect('resetpassword')
+        else:
+            return render(request,'resetpassword.html')
+    else:
+        return redirect('forgetpassword')
 

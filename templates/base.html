@@ -131,7 +131,7 @@ body {
 						<small class="title text-dark">Welcome <span class="text-info"><b>{{user.first_name|capfirst}} {{user.last_name|capfirst}}</b></span></small>
 						{% endif %}
 						<div>
-							<a href="#">My Account</a> <span class="dark-transp"> | </span>
+							<a href="{% url 'dashboard' %}">My Account</a> <span class="dark-transp"> | </span>
 							<a href="{% url 'logout' %}">Logout</a>
 						</div>
 					</div>
@@ -145,7 +145,7 @@ body {
 					</div>
 					{% endif %}
 					{% if request.path == '/cart/' %}
-					<div class="ml-4 pl-4">&emsp;&emsp;</div>
+					<div class="ml-4 pl-4">&emsp;</div>
 					{% else %}
 					<a href="{% url 'cart_home' %}" class="widget-header pl-3 ml-0 mr-2">
 						<div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></div>
@@ -154,7 +154,7 @@ body {
 					{% endif %} 
 					{% if not request.user %}<div>&emsp;</div>{% else %}
 						{% if request.path == '/cart/wishlist/' %}
-					<div class="mr-4 pr-2">&emsp;&emsp;</div>
+					<div class="mr-4 pr-1">&emsp;&emsp;</div>
 						{% else %}
 					<a href="{% url 'wishlist' %}" class="widget-header pl-0 ml-2">
 						<div class="icon icon-sm rounded-circle border"><i class="far fa-heart" aria-hidden="true"></i></div>

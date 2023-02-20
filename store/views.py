@@ -50,7 +50,11 @@ def store(request,category_slug=None):
 def product_details(request,category_slug,product_slug):
     try:
         single_product = Product.objects.get(category__slug=category_slug, slug=product_slug ,is_available=True)
-        in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request), product=single_product).exists()
+        if request.user.is_authenticated:
+            in_cart = CartItem.objects.filter(user=request.user, product=single_product).exists()
+        else: 
+            in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request), product=single_product).exists()
+            
         wishlist = Wishlist.objects.filter(cart__cart_id=_cart_id(request), product=single_product).exists()
     except Exception as e:
         raise e

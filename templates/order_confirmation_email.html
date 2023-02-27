@@ -1,0 +1,11 @@
+{% autoescape off %}
+
+Hi {{user.first_name|capfirst}},
+
+We have received your order for the {% if cart_items|length > 1 %}products {% for item in cart_items %}{{item.product.product_name}} , {% endfor %}. {% else %}product {{product.product_name}} . {% endif %} 
+Your order number is {{order.order_number}} 
+
+
+- Team Estore
+
+{% endautoescape %}

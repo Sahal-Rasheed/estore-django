@@ -286,6 +286,8 @@ def checkout(request, cart_items=None, total=0, quantity=0):
     try:
         if request.user.is_authenticated:  
             cart_items=CartItem.objects.filter(user=request.user, is_active=True)
+            if cart_items.count() <= 0:
+                return redirect('store') 
         else:
             cart = Cart.objects.get(cart_id=_cart_id(request))
             cart_items=CartItem.objects.filter(cart=cart, is_active=True)

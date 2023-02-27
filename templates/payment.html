@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="section-content padding-y bg">
+<div class="container">
+    <div class="row">
+        <aside class="col-lg-8">
+            <div class="card">
+                <h5 class="card-header">Billing Address</h5>
+                <div class="card-body font-italic">
+                  <p class="card-text mb-0">{{order.first_name}} {{order.last_name}}</p>
+                  <p class="card-text mb-0">{{order.address_1}}</p>
+                  {% if order.address_2 %}
+                  <p class="card-text mb-0">{{order.address_2}}</p>
+                  {% endif %}
+                  <p class="card-text mb-0">{{order.city}}, {{order.state}}, {{order.country}} </p>
+                  <p class="card-text mb-0">{{order.email}}</p>
+                  <p class="card-text mb-0">{{order.phone}}</p>
+                  {% if order.order_note %}
+                  <p class="card-text mb-0"><b>Order Note: </b>{{order.order_note}}</p>
+                  {% endif %}
+
+                </div>
+              </div>
+            <div class="card">
+                <h5 class="card-header">Review Cart</h5>
+                    <div class="card-body">
+                        {% for cart_item in cart_items %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <figure class="itemside  mb-4">
+                                    <div class="aside"><img src="{{cart_item.product.product_image.url}}" class="border img-sm"></div>
+                                    <figcaption class="info">
+                                        <p>{{cart_item.product.product_name}}</p>
+                                        <span class="text-muted">{{cart_item.quantity}}x = $ {{cart_item.product.price}} </span>
+                                    </figcaption>
+                                </figure>
+                            </div> <!-- col.// -->
+                        </div> <!-- row.// -->
+                        {% endfor %}
+                    </div> <!-- card-body.// -->
+            </div>
+        
+            
+        </aside> <!-- col.// -->
+        <aside class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <dl class="dlist-align">
+                        <dt>Total price:</dt>
+                        <dd class="text-right">${{total}}</dd>
+                    </dl>
+                    <dl class="dlist-align">
+                        <dt>Tax:</dt>
+                        <dd class="text-right"> ${{tax}}</dd>
+                    </dl>
+                    <dl class="dlist-align">
+                        <dt>Grand Total:</dt>
+                        <dd class="text-right text-dark b"><strong>${{grand_total}}</strong></dd>
+                    </dl>
+                    <hr>
+        
+                    <div> 
+                        <article class="accordion" id="accordion_pay">
+                            <div class="card">
+                                <h5 class="card-header">Select Payment Method</h5>
+                                <div class="card-body">
+                                    <img src="{% static '/images/misc/payment-paypal.png' %}" class="float-right" height="24"> 
+                                    <label class="form-check collapsed">
+                                        <input class="form-check-input" name="payment-option" checked type="radio" value="paypal">
+                                        <h6 class="form-check-label"> 
+                                            Paypal 
+                                        </h6>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <img src="{% static '/images/misc/gpay.png' %}" class="float-right" height="30"> 
+                                    <label class="form-check collapsed">
+                                        <input class="form-check-input" name="payment-option" checked type="radio" value="googlepay">
+                                        <h6 class="form-check-label"> 
+                                            Google Pay
+                                        </h6>
+                                    </label>
+                                </div>
+                            </div> <!-- card.// -->
+                        </article> 
+                    </div>
+                
+                    <div id="paypal-button-container">
+
+
+                    </div>
+                </div>
+            </div> 
+        </aside>
+    </div> 
+</div> 
+</section>
+
+<script>
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    var grand_total = "{{  grand_total  }}"
+    var url = "{% url 'payment' %}"
+    var csrftoken = getCookie('csrftoken');
+    var orderID = "{{order.order_number}}"
+    var payment_method = 'Paypal'
+    var redirect_url = "{% url 'order_complete' %}"
+
+    function initPayPalButton() {
+      paypal.Buttons({
+        style: {
+          shape: 'rect',
+          color: 'blue',
+          layout: 'horizontal',
+          label: 'paypal',
+          
+        },
+
+        createOrder: function(data, actions) {
+          return actions.order.create({
+            purchase_units: [{"amount":{"currency_code":"USD","value":grand_total}}]
+          });
+        },
+
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(orderData) {
+            
+            // Full available details
+            console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+
+            sendData();
+            function sendData(){
+                fetch(url, {
+                        method: "POST",
+                        headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRFToken": csrftoken,
+                    },
+                    body: JSON.stringify({
+                            orderID : orderID,
+                            transID : orderData.id,
+                            payment_method : payment_method,
+                            status : orderData.status,
+                    }),
+                    
+                  })
+                    .then((response) => response.json())
+                    .then((data) => {
+                    window.location.href = redirect_url + '?order_id='+data.order_number+ '&transaction_id='+data.transID
+                    });
+            }
+
+            
+          });
+        },
+
+      }).render('#paypal-button-container');
+    }
+    initPayPalButton();
+</script>
+
+
+
+{% endblock content %}

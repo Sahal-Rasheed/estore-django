@@ -1,0 +1,144 @@
+from django.shortcuts import render,redirect
+from django.http import JsonResponse
+import datetime
+import json
+
+# Email
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+
+from store.models import Product
+from cart.models import CartItem
+from .models import Order, Payment, OrderProduct
+from .forms import OrderForm
+# Create your views here.
+
+def Payments(request):
+    # Getting data from frontend after transaction and updating order,payment,orderproduct models with these data after the payment is success
+    body = json.loads(request.body)
+    print(body)
+    order = Order.objects.get(user=request.user, is_ordered=False, order_number=body['orderID'])
+    payment = Payment(
+        user = request.user,
+        payment_id = body['transID'],
+        payment_method = body['payment_method'],
+        amount_paid = order.order_total,
+        status = body['status'],
+    )
+    payment.save()
+    order.payment = payment
+    order.is_ordered = True
+    order.save() 
+
+    cart_items = CartItem.objects.filter(user=request.user)
+    for item in cart_items:
+        orderproduct = OrderProduct()
+        orderproduct.order_id = order.id
+        orderproduct.payment = payment
+        orderproduct.user_id = request.user.id
+        orderproduct.product_id = item.product_id      
+        orderproduct.quantity = item.quantity
+        orderproduct.product_price = item.product.price
+        orderproduct.ordered = True
+        orderproduct.save()
+
+        # Reduce quantity of the sold product
+        product = Product.objects.get(id=item.product_id)
+        product.stock -= item.quantity
+        product.save()
+
+    # Deleting the cartitem after successfull order
+    CartItem.objects.filter(user=request.user).delete()
+
+    # Send confirmation mail of order received to the customer 
+    email_subject = 'Estore , Thank you for your order !'
+    email_body = render_to_string('order_confirmation_email.html',{
+        'user'      : request.user,  
+        'order'     : order,
+        'cart_items': cart_items,
+        'product'   : product,
+    })
+    to_email = request.user.email
+    send_email = EmailMessage(email_subject, email_body, to=[to_email])
+    send_email.send()
+        
+    # Send order_number , transaction_id back to frontend through json resposne
+    data = {
+        'order_number' : order.order_number,
+        'transID'      : payment.payment_id, 
+    }
+    return JsonResponse(data)
+
+def PlaceOrder(request, total=0, quantity=0):
+    user = request.user
+    cart_items = CartItem.objects.filter(user=user)
+    if cart_items.count() <= 0:
+        return redirect('store') 
+
+    grand_total = 0
+    tax = 0 
+    for cart_item in cart_items:
+        total += (cart_item.product.price * cart_item.quantity) 
+        quantity += cart_item.quantity
+    tax = (2 * total)/100
+    grand_total = tax + total  
+    
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        print(form.errors)
+
+        if form.is_valid():
+            order = Order()
+            order.user = user
+            order.first_name = form.cleaned_data.get('first_name')
+            order.last_name = form.cleaned_data.get('last_name')
+            order.email = form.cleaned_data.get('email')
+            order.phone = form.cleaned_data.get('phone')
+            order.address_1 = form.cleaned_data.get('address_1')
+            order.address_2 = form.cleaned_data.get('address_2')
+            order.country = form.cleaned_data.get('country')
+            order.state = form.cleaned_data.get('state')
+            order.city = form.cleaned_data.get('city')
+            order.order_note = form.cleaned_data.get('order_note')
+            order.order_total = grand_total
+            order.tax = tax
+            order.ip_address = request.META.get('REMOTE_ADDR')
+            order.save()
+            order_number = str(int(datetime.datetime.now().strftime('%Y%m%d%H%H%S')))
+            order.order_number  = order_number
+            order.save()
+
+            order = Order.objects.get(user=user, is_ordered=False, order_number=order_number)
+            context = {
+                'order' : order,
+                'cart_items' : cart_items,
+                'total' : total,
+                'grand_total' : grand_total,
+                'tax' : tax
+            }
+            return render(request, 'payment.html',context)
+    else:
+        return redirect('checkout')
+        
+
+def OrderComplete(request):
+    order_number = request.GET.get("order_id")
+    payment_id = request.GET.get("transaction_id")
+
+    order = Order.objects.get(order_number=order_number,is_ordered=True)
+    order_products = OrderProduct.objects.filter(order=order)
+
+    subtotal = 0
+    for x in order_products:
+        subtotal += x.product_price * x.quantity
+
+    payment = Payment.objects.get(payment_id=payment_id)
+
+    context = {
+        'order' : order,
+        'order_products' : order_products,
+        'payment' : payment,
+        'subtotal' : subtotal,
+    }
+
+    return render(request, 'order_complete.html', context)

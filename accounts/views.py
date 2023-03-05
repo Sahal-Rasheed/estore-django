@@ -17,6 +17,7 @@ from django.core.mail import EmailMessage
 
 from cart.views import _cart_id
 from cart.models import CartItem,Cart,Wishlist
+from orders.models import Order,OrderProduct
 
 # Create your views here.
 
@@ -253,4 +254,30 @@ def ResetPassword(request):
         return redirect('forgetpassword')
 
 def Dashboard(request):
-    return render(request,'dashboard.html')
+    total_orders = 0
+    net_spend = 0
+    pending_orders_count = 0
+    orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True)
+    pending_orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True,status='Processing')
+    pending_orders_count = pending_orders.count() 
+
+    total_orders = orders.count()
+    
+    for order in orders:
+        net_spend += order.order_total
+
+    context = {
+        'total_orders' : total_orders,
+        'net_spend' : net_spend,
+        'pending_orders_count' : pending_orders_count,
+    }
+    return render(request,'dashboard.html',context)
+
+def MyOrders(request):
+    order_products = OrderProduct.objects.order_by('-created_at').filter(user=request.user, ordered=True)
+    context = {
+        'order_products' : order_products,
+    }
+
+    return render(request,'my_orders.html', context)
+

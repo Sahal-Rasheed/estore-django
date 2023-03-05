@@ -191,7 +191,9 @@ body {
 <br><br>
 <!-- ========================= FOOTER ========================= -->
 
-
+{% if '/my_orders/' in request.path %}
+<div></div>
+{% else %}
 <footer class="section-footer border-top" id="footer">
 	<div class="container">
 		<section class="footer-bottom border-top row">
@@ -211,6 +213,7 @@ body {
 		</section>
 	</div><!-- //container -->
 </footer>
+{% endif %}
 <!-- ========================= FOOTER END // ========================= -->
 </div>
 

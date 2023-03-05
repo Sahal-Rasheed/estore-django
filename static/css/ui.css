@@ -83,6 +83,12 @@ a:hover {
   color: #000;
 }
 
+.now {
+  background-color: #000 !important;
+}
+
+
+
 /* =================  DEFINED VARIABLES =================== */
 .icon-xs, .icon-sm, .icon-md, .icon-lg {
   display: inline-block;

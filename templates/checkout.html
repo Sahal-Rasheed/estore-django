@@ -109,8 +109,34 @@
           </tbody>
         
           </table>
+
+          <div> 
+                <div class="card">
+                    <h5 class="card-header">Select Payment Method</h5>
+                    <div class="card-body">
+                        <img src="{% static '/images/misc/payment-paypal.png' %}" class="float-right" height="24"> 
+                        <label class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="Radio1" value="paypal">
+                            <label class="form-check-label" for="Radio1"> 
+                                <h6>Paypal</h6> 
+                            </label>
+                        </label>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <img src="{% static '/images/misc/gpay.png' %}" class="float-right" height="30"> 
+                        <label class="form-check">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="Radio2" value="razorpay">
+                            <label class="form-check-label" for="Radio2"> 
+                                <h6>Razor Pay</h6>
+                            </label>
+                        </label>
+                    </div>
+                </div> <!-- card.// -->
+          </div>
           
-          <button type="submit" name="submit" class="btn btn-success btn-block">Place Order</button>
+          <button type="submit" name="submit" class="btn btn-success btn-block mt-2">Place Order</button>
                 <a href="{% url 'store' %}" class="btn btn-light btn-block">Continue Shopping</a>
           </form>
             </div> <!-- card-body.// -->

@@ -1,9 +1,9 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Account
-from .forms import RegistrationForm
+from .models import Account,UserProfile
+from .forms import RegistrationForm,UserForm,UserProfileForm
 from twilio.rest import Client
 from django.conf import settings
 
@@ -253,6 +253,7 @@ def ResetPassword(request):
     else:
         return redirect('forgetpassword')
 
+@login_required(login_url='login')
 def Dashboard(request):
     total_orders = 0
     net_spend = 0
@@ -273,6 +274,7 @@ def Dashboard(request):
     }
     return render(request,'dashboard.html',context)
 
+@login_required(login_url='login')
 def MyOrders(request):
     order_products = OrderProduct.objects.order_by('-created_at').filter(user=request.user, ordered=True)
     context = {
@@ -280,4 +282,34 @@ def MyOrders(request):
     }
 
     return render(request,'my_orders.html', context)
+
+@login_required(login_url='login')
+def EditProfile(request):
+    try:
+        userprofile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        userprofile = UserProfile.objects.create(user=request.user)
+    if request.method == 'POST':
+        userform = UserForm(data=request.POST, instance=request.user)
+        userprofileform = UserProfileForm(data=request.POST, instance=userprofile, files=request.FILES)
+        if userform.is_valid() and userprofileform.is_valid():
+            userform.save()
+            userprofileform.save()
+            messages.success(request, 'User profile updated successfully')
+            return redirect('editprofile')
+        else:
+            messages.error(request, 'User profile updation failed')
+            return redirect('editprofile')
+    else:
+        userform = UserForm(instance=request.user)
+        userprofileform = UserProfileForm(instance=userprofile)
+    
+    context = {
+        'userform'        : userform,
+        'userprofileform' : userprofileform,
+        'userprofile'     : userprofile
+    }
+
+    return render(request,'edit_profile.html', context)
+
 

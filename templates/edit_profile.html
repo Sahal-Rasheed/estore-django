@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y bg">
+    <div>
+        {% if messages %}
+                    {% for message in messages %}
+                        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                            <div class="alert alert-success alert-dismissible">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>{{message}}</strong>
+                            </div>
+                        {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                            <div class="alert alert-danger alert-dismissible">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>{{message}}</strong>
+                            </div>
+                        {% else %}
+                        <div></div>
+                        {% endif%}
+                    {% endfor %}
+        {% endif %}
+    </div>
+    <div class="container">
+        <div class="row">
+            <aside class="col-md-3">
+                <!--   SIDEBAR   -->
+                <ul class="list-group">
+                    <a class="list-group-item {% if '/dashboard/' in request.path %} text-light now {% else %} text-dark {% endif %}"
+                        href="{% url 'dashboard' %}"> Dashboard </a>
+                    <a class="list-group-item {% if '/my_orders/' in request.path %} text-light now {% else %} text-dark {% endif %}"
+                        href="{% url 'myorders' %}"> My Orders </a>
+                    <a class="list-group-item {% if '/edit_profile/' in request.path %} text-light now {% else %} text-dark {% endif %}"
+                        href="{% url 'editprofile' %}"> Edit Profile </a>
+                    <a class="list-group-item {% if '/change_password/' in request.path %} text-light now {% else %} text-dark {% endif %}"
+                        href="#"> Change Password </a>
+                </ul>
+                <br>
+                <a class="btn btn-light btn-block" href="{% url 'logout' %}"> <i
+                        class="fa fa-power-off text-danger"></i> <span class="text">Logout</span> </a>
+                <!--   SIDEBAR .//END   -->
+            </aside>
+            <main class="col-md-9">
+                <article class="card">
+                    <header class="card-header">
+                        <strong class="d-inline-block mr-3">Edit your profile:</strong>
+                    </header>
+                    <div class="card-body">
+                        {% if userprofile.profile_pic.url != '' %}
+                        <div class="text-center">
+                            <img src="{{userprofile.profile_pic.url}}" alt="profile" width="90" style="border-radius: 50%;">
+                        </div>
+                        {% else %}
+                        <div></div>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form action="{% url 'editprofile' %}" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="form-row">
+                                        <div class="col-md-6 form-group">
+                                            <label>First Name</label>
+                                            {{userform.first_name}}
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label>Last Name</label>
+                                            {{userform.last_name}}
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6 form-group">
+                                            <label>Phone Number</label>
+                                            {{userform.phone_number}}
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label>Profile Picture</label>
+                                            {{userprofileform.profile_pic}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Address Line 1</label>
+                                        {{userprofileform.address_1}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Address Line 2</label>
+                                        {{userprofileform.address_2}}
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-3 form-group">
+                                            <label>City</label>
+                                            {{userprofileform.city}}
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label>State</label>
+                                            {{userprofileform.state}}
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label>Country</label>
+                                            {{userprofileform.country}}
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label>Pin Code</label>
+                                            {{userprofileform.pincode}}
+                                        </div>
+                                    </div>
+                                    <input type="submit" value="Save" class="btn btn-info">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </article>    
+            </main>    
+        </div>
+
+
+ 
+    </div> <!-- row.// -->
+
+
+
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+
+
+
+{% endblock content %}

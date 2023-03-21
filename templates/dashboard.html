@@ -14,7 +14,7 @@
                 <a class="list-group-item {% if '/dashboard/' in request.path %} text-light now {% else %} text-dark {% endif %}" href="{% url 'dashboard' %}"> Dashboard </a>
                 <a class="list-group-item {% if '/my_orders/' in request.path %} text-light now {% else %} text-dark {% endif %}" href="{% url 'myorders' %}"> My Orders </a>
                 <a class="list-group-item {% if '/edit_profile/' in request.path %} text-light now {% else %} text-dark {% endif %}" href="{% url 'editprofile' %}"> Edit Profile </a>
-                <a class="list-group-item {% if '/change_password/' in request.path %} text-light now {% else %} text-dark {% endif %}" href="#"> Change Password </a>
+                <a class="list-group-item {% if '/change_password/' in request.path %} text-light now {% else %} text-dark {% endif %}" href="{% url 'change_password' %}"> Change Password </a>
             </ul>
             <br>
             <a class="btn btn-light btn-block" href="{% url 'logout' %}"> <i class="fa fa-power-off text-danger"></i> <span class="text">Logout</span> </a> 
@@ -30,7 +30,7 @@
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
-                                <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile" class="avatar" height="50" width="50" style="border-radius: 50%;">
+                                <img src="{{request.user.p_user.profile_pic.url}}" alt="profile" class="avatar" height="50" width="50" style="border-radius: 50%;">
                                 <p class="mb-0">{{request.user.email}}</p>
                                 <p>{{request.user.phone_number}}</p>
                             </div>

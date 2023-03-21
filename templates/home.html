@@ -58,7 +58,15 @@
 			<figcaption class="info-wrap">
 				<a href="{{product.get_product_cat_slug}}" class="title">{{product.product_name }}</a>
 				<div class="price mt-1">${{product.price|floatformat:2 }}</div> <!-- price-wrap.// -->
+        <div class="">
+          <span class="fa fa-star {% if product.average_rating.rating__avg > 0 %} checked {% endif %}"></span>
+          <span class="fa fa-star {% if product.average_rating.rating__avg > 1 %} checked {% endif %}"></span>
+          <span class="fa fa-star {% if product.average_rating.rating__avg > 2 %} checked {% endif %}"></span>
+          <span class="fa fa-star {% if product.average_rating.rating__avg > 3 %} checked {% endif %}" ></span>
+          <span class="fa fa-star {% if product.average_rating.rating__avg > 4 %} checked {% endif %}"></span>
+        </div>
 			</figcaption>
+      
 		</div>
 	</div> <!-- col.// -->
 	{% endfor %}

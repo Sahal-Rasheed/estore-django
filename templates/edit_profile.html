@@ -36,7 +36,7 @@
                     <a class="list-group-item {% if '/edit_profile/' in request.path %} text-light now {% else %} text-dark {% endif %}"
                         href="{% url 'editprofile' %}"> Edit Profile </a>
                     <a class="list-group-item {% if '/change_password/' in request.path %} text-light now {% else %} text-dark {% endif %}"
-                        href="#"> Change Password </a>
+                        href="{% url 'change_password' %}"> Change Password </a>
                 </ul>
                 <br>
                 <a class="btn btn-light btn-block" href="{% url 'logout' %}"> <i

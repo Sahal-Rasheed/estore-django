@@ -312,4 +312,47 @@ def EditProfile(request):
 
     return render(request,'edit_profile.html', context)
 
+@login_required(login_url='login')
+def OrderDetails(request,order_number):
+    subtotal = 0
+    order_detail = OrderProduct.objects.filter(order__order_number=order_number)
+    order = Order.objects.get(order_number=order_number)
+
+    for x in order_detail:
+        subtotal += x.product_price*x.quantity
+
+    context = {
+        'order' : order,
+        'order_detail' : order_detail,
+        'subtotal' : subtotal
+    }
+
+    return render(request,'order_detail.html', context)
+
+@login_required(login_url='login')
+def ChangePassword(request):
+    if request.method == 'POST':
+        current_pass = request.POST.get('current_pass')
+        new_pass = request.POST.get('new_pass')
+        confirm_pass = request.POST.get('confirm_pass')
+
+        user = authenticate(email=request.user.email, password=current_pass)
+        print(user)
+        if user:
+            if new_pass == confirm_pass:
+                user.set_password(new_pass)
+                user.save()
+                messages.success(request,'Passsword changed successfully')
+                return redirect('change_password')
+            else:
+                messages.error(request,'Password Mismatch')
+                return redirect('change_password')
+        else:
+            messages.error(request,'Old password was invalid')
+            return redirect('change_password')
+        
+    return render(request,'change_password.html')
+
+
+
 

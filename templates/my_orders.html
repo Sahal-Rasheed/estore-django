@@ -14,7 +14,7 @@
                 <a class="list-group-item {% if '/dashboard/' in request.path %} text-light now {% else %} text-dark {% endif %}" href="{% url 'dashboard' %}"> Dashboard </a>
                 <a class="list-group-item {% if '/my_orders/' in request.path %} text-light now {% else %} text-dark {% endif %}" href="{% url 'myorders' %}"> My Orders </a>
                 <a class="list-group-item {% if '/edit_profile/' in request.path %} text-light now {% else %} text-dark {% endif %}" href="{% url 'editprofile' %}"> Edit Profile </a>
-                <a class="list-group-item {% if '/change_password/' in request.path %} text-light now {% else %} text-dark {% endif %}" href="#"> Change Password </a>
+                <a class="list-group-item {% if '/change_password/' in request.path %} text-light now {% else %} text-dark {% endif %}" href="{% url 'change_password' %}"> Change Password </a>
             </ul>
             <br>
             <a class="btn btn-light btn-block" href="{% url 'logout' %}"> <i class="fa fa-power-off text-danger"></i> <span class="text">Logout</span> </a> 
@@ -40,7 +40,7 @@
                 <tbody>
                     {% for order_product in order_products %}
                 <tr>
-                    <td class="text-primary"><strong>{{order_product.order.order_number}}</strong></td>
+                    <td class="text-primary"><strong><a href="{% url 'order_details' order_product.order.order_number %}">{{order_product.order.order_number}}</a></strong></td>
                     <td width="65">
                         <img src="{{order_product.product.product_image.url}}" class="img-xs border">
                     </td>
@@ -56,42 +56,7 @@
                 </tbody>
               </table>
         
-            <!-- <div class="table-responsive">
-             <table class="table table-hover">
-                <tr>
-                    <td width="65">
-                        <img src="../images/items/1.jpg" class="img-xs border">
-                    </td>
-                    <td> 
-                        <p class="title mb-0">Product name goes here </p>
-                        <var class="price text-muted">USD 145</var>
-                    </td>
-                    <td> Seller <br> Nike clothing </td>
-                    <td width="250"> <a href="#" class="btn btn-outline-primary">Track order</a> <a href="#" class="btn btn-light"> Details </a> </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img src="../images/items/2.jpg" class="img-xs border">
-                    </td>
-                    <td> 
-                        <p class="title mb-0">Another name goes here </p>
-                        <var class="price text-muted">USD 15</var>
-                    </td>
-                    <td> Seller <br> ABC shop </td>
-                    <td> <a href="#" class="btn btn-outline-primary">Track order</a> <a href="#" class="btn btn-light"> Details </a> </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img src="../images/items/3.jpg" class="img-xs border">
-                    </td>
-                    <td> 
-                        <p class="title mb-0">The name of the product  goes here </p>
-                        <var class="price text-muted">USD 145</var>
-                    </td>
-                    <td> Seller <br> Wallmart </td>
-                    <td> <a href="#" class="btn btn-outline-primary">Track order</a> <a href="#" class="btn btn-light"> Details </a> </td>
-                </tr>
-            </table> -->
+        
             </div> <!-- table-responsive .end// -->
             </article> <!-- order-group.// --> 
         </main>

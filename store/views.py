@@ -3,6 +3,7 @@ from django.contrib import messages
 from store.models import Category,Product,Review
 from cart.models import CartItem,Wishlist,Cart
 from orders.models import OrderProduct
+from myadmin.models import Banner
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.db.models import Q
 from cart.views import _cart_id
@@ -12,8 +13,13 @@ from .forms import ReviewForm
 
 def home(request):
     products = Product.objects.all().filter(is_available=True)
+    banners = Banner.objects.all().order_by('-id')
+    first_banner = banners.first()
+    banners = banners.exclude(id=first_banner.id)
     context = {
         'products':products,
+        'banners' : banners,
+        'first_banner' : first_banner
     }
     return render(request,'home.html',context)
 

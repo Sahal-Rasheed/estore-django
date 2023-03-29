@@ -30,7 +30,11 @@
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-body">
+                                {% if request.user.p_user.profile_pic %}
                                 <img src="{{request.user.p_user.profile_pic.url}}" alt="profile" class="avatar" height="50" width="50" style="border-radius: 50%;">
+                                {% else %}
+                                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="profile" class="avatar" height="50" width="50" style="border-radius: 50%;">
+                                {% endif %}
                                 <p class="mb-0">{{request.user.email}}</p>
                                 <p>{{request.user.phone_number}}</p>
                             </div>

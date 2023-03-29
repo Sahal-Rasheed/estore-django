@@ -104,7 +104,65 @@
           </div>
         </div>
       </div>
-  
+
+      <div class="container-fluid py-4">
+        <div class="row">
+          <div class="col-12">
+            <div class="card mb-4">
+              <div class="card-header pb-0">
+                <h6>Recent Sales</h6>
+              </div>
+              <div class="card-body px-0 pt-0 pb-2">
+                <div class="table-responsive p-0">
+                  <table class="table align-items-center mb-0 table-hover">
+                    <thead>
+                      <tr>   
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-4">Date</th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Order ID</th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Customer</th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Order Total</th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Payment Mode</th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder ps-2">View</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                      <tr>
+                        <td>
+                            <h6 class="ps-4 mb-0 text-sm font-weight-bold "> {{ order.created_at }} </h6>
+                        </td>
+                        <td class="text-sm">
+                          <div class="d-flex flex-column justify-content-center">
+                              <h6 class="mb-0 text-sm font-weight-bold ">{{order.order_number}}</h6>
+                          </div>
+                      </td>
+                        <td class="text-sm">
+                            <div class="d-flex flex-column justify-content-center">
+                                <h6 class="mb-0 text-sm font-weight-bold ">{{order.first_name|capfirst}} {{order.last_name|capfirst}}</h6>
+                            </div>
+                        </td>
+                        <td class="text-sm">
+                            <div class="d-flex flex-column justify-content-center">
+                                <h6 class="mb-0 text-sm font-weight-bold ">{{order.order_total}}</h6>
+                            </div>
+                        </td>
+                        <td class="text-sm">
+                            <div class="d-flex flex-column justify-content-center">
+                                <h6 class="mb-0 text-sm font-weight-bold ">{{order.payment.payment_method}}</h6>
+                            </div>
+                        </td>
+                        <td class="text-sm">
+                          <a href="{% url 'view_order' order.id %}" class="text-danger px-2" ><i class="far fa-eye"></i></a>               
+                        </td>
+                      </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
   
 
 {% endblock content %}

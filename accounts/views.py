@@ -259,7 +259,7 @@ def Dashboard(request):
     net_spend = 0
     pending_orders_count = 0
     orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True)
-    pending_orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True,status='Processing')
+    pending_orders = OrderProduct.objects.order_by('-created_at').filter(user_id=request.user.id, ordered=True,status='Processing')
     pending_orders_count = pending_orders.count() 
 
     total_orders = orders.count()

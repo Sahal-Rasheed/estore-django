@@ -28,6 +28,8 @@ urlpatterns = [
     path('sales_table/sales_monthly/<int:date>', SalesMonthly, name='sales_monthly'),
     path('sales_table/sales_yearly/<int:date>', SalesYearly, name='sales_yearly'),
     path('sales_table/sales_csv/', SalesCSV, name='sales_csv'),
+    path('sales_table/sales_xls/', SalesXLS, name='sales_xls'),
+
 
 
 

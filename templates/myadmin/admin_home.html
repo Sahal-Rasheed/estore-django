@@ -110,6 +110,23 @@
           <div class="col-12">
             <div class="card mb-4">
               <div class="card-header pb-0">
+                <div class="row">
+                  <div class="col-6">
+                    <h6>Orders Overview</h6>
+                    <div class="card-body px-0 pt-0 pb-2">
+                      <canvas id="orderChart" width="800" height="450"></canvas>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <h6>Revenue Overview</h6>
+                    <div class="card-body px-0 pt-0 pb-2">
+                      <canvas id="revenueChart" width="800" height="450"></canvas>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+              <div class="card-header pb-0">
                 <h6>Recent Sales</h6>
               </div>
               <div class="card-body px-0 pt-0 pb-2">
@@ -164,5 +181,72 @@
           </div>
         </div>
   
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.0/chart.min.js"></script>
+      <script>
+        const chart1 = document.getElementById('orderChart').getContext('2d');
+        const orderChart = new Chart(chart1, {
+            type: 'bar',
+            data: {
+              labels : ['Processing','Accepted','Out For Delivery','Delivered','Cancelled'],
+                datasets: [{
+                  label: "Sales",
+                  data : ['{{processing}}','{{accepted}}','{{out_delivery}}','{{delivered}}','{{cancelled}}'],
+                  backgroundColor: [
+                      '#e9724d',
+                      '#d6d727',
+                      '#92cad1',
+                      '#79ccb3',
+                      '#868686',
+                  ],
+                  borderColor: [
+                      '#e9724d',
+                      '#d6d727',
+                      '#92cad1',
+                      '#79ccb3',
+                      '#868686',
+                  ],
+                  borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+      </script>
+
+      <script>
+        const chart2 = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(chart2, {
+            type: 'bar',
+            data: {
+              labels : ['Paypal','Razorpay'],
+                datasets: [{
+                  label: "Revenue",
+                  data : ['{{paypal_total}}','{{razorpay_total}}'],
+                  backgroundColor: [
+                      '#e60049', 
+                      '#0bb4ff',
+                  ],
+                  borderColor: [
+                      '#e60049', 
+                      '#0bb4ff',
+                  ],
+                  borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+      </script>
 
 {% endblock content %}

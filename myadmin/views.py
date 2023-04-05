@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.core.paginator import Paginator
 from django.contrib import messages
+from django.utils import timezone
 import datetime
 import csv
 import xlwt
@@ -8,7 +9,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.template.defaultfilters import slugify
 from django.contrib.auth import authenticate,login,logout
-from orders.models import Payment, OrderProduct, Order
+from orders.models import Payment, OrderProduct, Order, OrderTracking
 from store.models import Product,Category
 from accounts.models import Account
 from .models import Banner
@@ -57,12 +58,23 @@ def AdminHome(request):
     sold_products = OrderProduct.objects.all().count()
     orders = Order.objects.filter(is_ordered=True).order_by('-id')[:10]
 
+    processing = OrderProduct.objects.filter(status = 'Processing').count()
+    accepted = OrderProduct.objects.filter(status = 'Accepted').count()
+    out_delivery = OrderProduct.objects.filter(status = 'Out For Delivery').count()
+    delivered = OrderProduct.objects.filter(status = 'Delivered').count()
+    cancelled = OrderProduct.objects.filter(status = 'Cancelled').count()
+
     context = {
         'paypal_total' : paypal_total,
         'razorpay_total' : razorpay_total,
         'total_earning' : total_earning,
         'sales' : sold_products,
         'orders' : orders,
+        'processing' : processing,
+        'accepted' : accepted,
+        'out_delivery' : out_delivery,
+        'delivered' : delivered,
+        'cancelled' : cancelled,
     }
     
     return render(request, 'myadmin/admin_home.html', context)
@@ -257,6 +269,26 @@ def OrderStatus(request, id):
         status = request.POST.get('status')
         order_product.status = status
         order_product.save()
+        if OrderTracking.objects.filter(order_id = order_product.id).exists():
+            order_tracking = OrderTracking.objects.get(order_id = order_product.id)
+        else:
+            order_tracking = OrderTracking(order_id = order_product.id)
+        if status == 'Accepted':  
+            order_tracking.accepted = status
+            order_tracking.a_date = timezone.now()
+            order_tracking.save()
+        elif status == 'Out For Delivery':
+            order_tracking.out_delivery= status
+            order_tracking.out_date = timezone.now()
+            order_tracking.save()
+        elif status == 'Delivered':
+            order_tracking.delivered = status
+            order_tracking.d_date = timezone.now()
+            order_tracking.save()   
+        elif status == 'Cancelled':
+            order_tracking.cancelled = status
+            order_tracking.c_date = timezone.now()
+            order_tracking.save() 
 
     return redirect(url)
 

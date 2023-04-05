@@ -15,6 +15,7 @@ urlpatterns = [
     path('my_orders/', MyOrders, name='myorders'),
     path('edit_profile/', EditProfile, name='editprofile'),
     path('order_detail/<str:order_number>', OrderDetails, name='order_details'),
+    path('order_tracking/<int:orderpro_id>', OrderTrack, name='order_tracking'),
     path('change_password/', ChangePassword, name='change_password'),
 
 

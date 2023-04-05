@@ -174,7 +174,7 @@ def PlaceOrder(request, total=0, quantity=0):
     order_number = None
     if request.method == 'POST':
         selected_value = request.POST.get('exampleRadios')
-        print(selected_value)
+        # request.session['selected_value'] = selected_value
         form = OrderForm(request.POST)
         print(form.errors)
 
@@ -215,6 +215,7 @@ def PlaceOrder(request, total=0, quantity=0):
                 'grand_total' : grand_total,
                 'tax' : tax,
                 'payment' : payment,
+                'selected_value' : selected_value,
             }
             return render(request, 'payment.html',context)
     else:

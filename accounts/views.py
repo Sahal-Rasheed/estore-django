@@ -17,7 +17,7 @@ from django.core.mail import EmailMessage
 
 from cart.views import _cart_id
 from cart.models import CartItem,Cart,Wishlist
-from orders.models import Order,OrderProduct
+from orders.models import Order,OrderProduct,OrderTracking
 
 # Create your views here.
 
@@ -353,6 +353,25 @@ def ChangePassword(request):
         
     return render(request,'change_password.html')
 
+def OrderTrack(request, orderpro_id):
+    order_tracking = None
+    try:
+        order_tracking = OrderTracking.objects.get(order_id=orderpro_id)
+    except:
+        OrderTracking.DoesNotExist
+
+    order_pro = OrderProduct.objects.get(id=orderpro_id)
+    order_processing = order_pro.status
+    date = order_pro.created_at
+    context = {
+        'order_pro' : order_pro,
+        'order_tracking' : order_tracking,
+        'order_processing' : order_processing,
+        'date' : date,
+    }
+
+    return render(request,'order_tracking.html', context)
+    
 
 
 

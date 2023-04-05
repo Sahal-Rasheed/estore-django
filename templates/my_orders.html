@@ -35,6 +35,7 @@
                     <th scope="col">Billing Name</th>
                     <th scope="col">Order Total</th>
                     <th scope="col">Order Date</th>
+                    <th scope="col">Track Order</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -51,6 +52,7 @@
                     <td>{{order_product.order.first_name}} {{order_product.order.last_name}}</td>
                     <td>$ {{order_product.order.order_total}}</td>
                     <td>{{order_product.order.created_at}}</td>
+                    <td><a href="{% url 'order_tracking' order_product.id %}"><i class="fas fa-map-marker-alt fa-lg mt-4 ml-2 text-danger"></i></a></td>
                 </tr>
                     {% endfor %}
                 </tbody>

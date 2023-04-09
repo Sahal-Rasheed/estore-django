@@ -11,6 +11,7 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth import authenticate,login,logout
 from orders.models import Payment, OrderProduct, Order, OrderTracking
 from store.models import Product,Category
+from cart.models import Coupon
 from accounts.models import Account
 from .models import Banner
 
@@ -39,6 +40,9 @@ def AdminLogout(request):
 
 @login_required(login_url='admin_login')
 def AdminHome(request):
+    if not request.user.is_superadmin:
+        return redirect('home')
+    
     paypal_total = 0
     razorpay_total = 0
     total_earning = 0
@@ -81,6 +85,9 @@ def AdminHome(request):
 
 @login_required(login_url='admin_login')
 def UsersTable(request):
+    if not request.user.is_superadmin:
+        return redirect('home')
+    
     users = Account.objects.all()
     context = {
         'users' : users,
@@ -100,6 +107,9 @@ def BlockUser(request,id):
 
 @login_required(login_url='admin_login')
 def ProductTable(request):
+    if not request.user.is_superadmin:
+        return redirect('home')
+
     products = Product.objects.all().order_by('created_date')
     paginator = Paginator(products, 9)
     page_number = request.GET.get('page')
@@ -180,6 +190,9 @@ def DeleteProduct(request, id):
 
 @login_required(login_url='admin_login')
 def CategoryTable(request):
+    if not request.user.is_superadmin:
+        return redirect('home')
+
     categories = Category.objects.all()
     context = {
         'categories' : categories,
@@ -241,6 +254,9 @@ def DeleteCategory(request, id):
 
 @login_required(login_url='admin_login')
 def OrderTable(request):
+    if not request.user.is_superadmin:
+        return redirect('home')
+
     orders = Order.objects.filter(is_ordered=True).order_by('-created_at')
     paginator = Paginator(orders, 10)
     page_number = request.GET.get('page')
@@ -294,6 +310,9 @@ def OrderStatus(request, id):
 
 @login_required(login_url='admin_login')
 def BannerTable(request):
+    if not request.user.is_superadmin:
+        return redirect('home')
+
     banners = Banner.objects.all()
     return render(request, 'myadmin/banner_table.html', {'banners':banners})
 
@@ -328,10 +347,10 @@ def DeleteBanner(request, id):
 
 @login_required(login_url='admin_login')
 def SalesTable(request):
+    if not request.user.is_superadmin:
+        return redirect('home')
+
     orders = Order.objects.filter(is_ordered=True).order_by('-id')
-    # paginator = Paginator(orders, 10)
-    # page_number = request.GET.get('page')
-    # page_orders = paginator.get_page(page_number) 
     context = {
         'orders' : orders
     }
@@ -356,7 +375,6 @@ def SalesDate(request):
     }
 
     return render(request, 'myadmin/sales_table.html', context )
-
 
 
 def SalesMonthly(request, date):
@@ -404,7 +422,6 @@ def SalesCSV(request):
     return response
 
 
-
 def SalesXLS(request):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="sales_report.xls"'
@@ -434,3 +451,43 @@ def SalesXLS(request):
     wb.save(response)
 
     return response
+
+@login_required(login_url='admin_login')
+def CouponTable(request):
+    if not request.user.is_superadmin:
+        return redirect('home')
+
+    coupons = Coupon.objects.all()
+    context = {
+        'coupons' : coupons,
+    }
+    return render(request, 'myadmin/coupon_table.html', context)
+
+@login_required(login_url='admin_login')
+def DeleteCoupon(request, id):
+    coupon = Coupon.objects.get(id=id)
+    coupon.delete()
+    return redirect('coupon_table')
+
+@login_required(login_url='admin_login')
+def AddCoupon(request):
+    if request.method == 'POST':
+        coupon = request.POST.get('coupon')
+        discount = request.POST.get('discount')
+        x = Coupon(coupon=coupon,discount=discount)
+        x.save()
+        return redirect('coupon_table')
+    
+    return render(request, 'myadmin/add_coupon.html')
+
+@login_required(login_url='admin_login')
+def CouponStatus(request, id):
+    coupon = Coupon.objects.get(id=id)
+    if coupon.is_active:
+        coupon.is_active = False
+    else:
+        coupon.is_active = True
+    coupon.save()
+    return redirect('coupon_table')
+
+

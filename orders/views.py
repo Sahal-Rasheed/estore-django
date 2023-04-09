@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 
 from store.models import Product
-from cart.models import CartItem
+from cart.models import CartItem,Coupon,AppliedCoupon
 from .models import Order, Payment, OrderProduct
 from .forms import OrderForm
 # Create your views here.
@@ -51,6 +51,17 @@ def Payments(request):
 
     # Deleting the cartitem after successfull order
     CartItem.objects.filter(user=request.user).delete()
+
+    # Deleting the coupon from session and add it to usedcoupon after successfull order
+    if 'coupon' in request.session:
+        try:
+            coupon = request.session['coupon']
+            coupon_applied = Coupon.objects.get(coupon=coupon)
+            x = AppliedCoupon.objects.create(user=request.user,coupon=coupon_applied)
+            x.save()
+            del request.session['coupon']
+        except:
+            pass
 
     # Send confirmation mail of order received to the customer 
     email_subject = 'Estore , Thank you for your order !'
@@ -110,6 +121,18 @@ def Razorpay(request):
     # Deleting the cartitem after successfull order
     CartItem.objects.filter(user=request.user).delete()
 
+    # Deleting the coupon from session and add it to usedcoupon after successfull order
+    if 'coupon' in request.session:
+        try:
+            coupon = request.session['coupon']
+            coupon_applied = Coupon.objects.get(coupon=coupon)
+            x = AppliedCoupon.objects.create(user=request.user,coupon=coupon_applied)
+            x.save()
+            del request.session['coupon']
+        except:
+            pass
+
+
     # Send confirmation mail of order received to the customer 
     email_subject = 'Estore , Thank you for your order !'
     email_body = render_to_string('order_confirmation_email.html',{
@@ -152,14 +175,21 @@ def PlaceOrder(request, total=0, quantity=0):
     cart_items = CartItem.objects.filter(user=user)
     if cart_items.count() <= 0:
         return redirect('store') 
-
+    
+    if 'coupon' in request.session:
+        coupon = request.session['coupon']
+        x = Coupon.objects.get(coupon=coupon)
+        discount = x.discount
+    else:
+        discount = 0
+        
     grand_total = 0
     tax = 0 
     for cart_item in cart_items:
         total += (cart_item.product.price * cart_item.quantity) 
         quantity += cart_item.quantity
     tax = (2 * total)/100
-    grand_total = tax + total  
+    grand_total = (tax + total) - discount  
 
     ###########################################
     client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))

@@ -11,5 +11,9 @@ urlpatterns = [
     path('wishlist/', wishlist, name='wishlist'),
     path('remove_from_wishlist/<int:product_id>/', remove_from_wishlist, name='remove_from_wishlist'),
     path('checkout/', checkout, name='checkout'),
+    path('coupon_apply/', coupon_apply, name='coupon_apply'),
+    path('remove_coupon/', remove_coupon, name='remove_coupon'),
+
+
 
 ]

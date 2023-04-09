@@ -48,7 +48,7 @@
     <div>
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" href="{% url 'adminhome' %}">
+          <a class="nav-link {% if request.path == '/myadmin/' %} active {% endif %}" href="{% url 'adminhome' %}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
             </div>
@@ -56,7 +56,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="{% url 'user_table' %}">
+          <a class="nav-link {% if '/user_table/' in request.path %} active {% endif %}" href="{% url 'user_table' %}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
             </div>
@@ -64,7 +64,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="{% url 'product_table' %}">
+          <a class="nav-link {% if '/product_table/' in request.path %} active {% endif %}" href="{% url 'product_table' %}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-shop text-success text-sm opacity-10"></i>
             </div>
@@ -72,7 +72,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="{% url 'category_table' %}">
+          <a class="nav-link {% if '/category_table/' in request.path %} active {% endif %}" href="{% url 'category_table' %}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-bullet-list-67 text-info text-sm opacity-10"></i> 
             </div>
@@ -80,7 +80,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="{% url 'order_table' %}">
+          <a class="nav-link {% if '/order_table/' in request.path %} active {% endif %}" href="{% url 'order_table' %}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-bag-17 text-danger text-sm opacity-10"></i>
             </div>
@@ -88,7 +88,15 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="{% url 'sales_table' %}">
+          <a class="nav-link {% if '/coupon_table/' in request.path %} active {% endif %}" href="{% url 'coupon_table' %}">
+            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fa fa-tag text-primary text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Coupons</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if '/sales_table/' in request.path %} active {% endif %}" href="{% url 'sales_table' %}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="fas fa-chart-bar text-dark text-sm opacity-10"></i>
             </div>
@@ -96,7 +104,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="{% url 'banner_table' %}">
+          <a class="nav-link {% if '/banner_table/' in request.path %} active {% endif %}" href="{% url 'banner_table' %}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-album-2 text-warning text-sm opacity-10"></i>
             </div>

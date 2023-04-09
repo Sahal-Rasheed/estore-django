@@ -1,8 +1,9 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from store.models import Product
-from .models import Cart,CartItem,Wishlist
+from .models import Cart,CartItem,Wishlist,Coupon,AppliedCoupon
 
 # Create your views here.
 
@@ -222,6 +223,14 @@ def remove_from_cart(request, product_id):
 
 #this is the view for orginal cart page (basically can say cart_home_page)
 def cart_home(request, cart_items=None, total=0, quantity=0):
+    coupon = None
+    if 'coupon' in request.session:
+        coupon = request.session['coupon']
+        x = Coupon.objects.get(coupon=coupon)
+        discount = x.discount
+    else:
+        discount = 0
+        
     tax=0
     grand_total=0
     try:
@@ -234,7 +243,7 @@ def cart_home(request, cart_items=None, total=0, quantity=0):
             total += (cart_item.product.price * cart_item.quantity) 
             quantity += cart_item.quantity
         tax = (2 * total)/100
-        grand_total = tax + total
+        grand_total = (tax + total) - discount
     except ObjectDoesNotExist:
         pass
 
@@ -243,9 +252,15 @@ def cart_home(request, cart_items=None, total=0, quantity=0):
         'total':total,
         'quantity':quantity,
         'tax':tax,
-        'grand_total':grand_total
+        'grand_total':grand_total,
+        'coupon' : coupon,
     }
     return render(request, 'cart.html', context)
+
+def remove_coupon(request):
+    del request.session['coupon']
+    return redirect(cart_home)
+
 
 def add_to_wishlist(request,product_id):
     product = Product.objects.get(id=product_id)
@@ -285,6 +300,13 @@ def checkout(request, cart_items=None, total=0, quantity=0):
     grand_total=0
     try:
         if request.user.is_authenticated:  
+            if 'coupon' in request.session:
+                coupon = request.session['coupon']
+                x = Coupon.objects.get(coupon=coupon)
+                discount = x.discount
+            else:
+                discount = 0
+
             cart_items=CartItem.objects.filter(user=request.user, is_active=True)
             if cart_items.count() <= 0:
                 return redirect('store') 
@@ -295,7 +317,7 @@ def checkout(request, cart_items=None, total=0, quantity=0):
             total += (cart_item.product.price * cart_item.quantity) 
             quantity += cart_item.quantity
         tax = (2 * total)/100
-        grand_total = tax + total
+        grand_total = (tax + total) - discount
     except ObjectDoesNotExist:
         pass
 
@@ -307,3 +329,28 @@ def checkout(request, cart_items=None, total=0, quantity=0):
         'grand_total':grand_total
     }
     return render(request, 'checkout.html', context)
+
+def coupon_apply(request):
+    if request.method == 'POST':
+        coupon = request.POST.get('coupon')
+        try:
+            if Coupon.objects.get(coupon=coupon, is_active=True):
+                applied_coupon = Coupon.objects.get(coupon=coupon, is_active=True)
+                try:
+                    if AppliedCoupon.objects.get(user=request.user,coupon=applied_coupon):
+                        messages.error(request, 'Coupon has expired!')
+                        return redirect('cart_home')
+                except:
+                    request.session['coupon'] = coupon 
+                    messages.success(request, 'Coupon Applied Successfully')
+            else:
+                messages.error(request, 'Invalid Coupon!')
+                return redirect('cart_home')
+
+        except:
+            Coupon.DoesNotExist
+            messages.error(request, 'Invalid Coupon')
+
+    return redirect('cart_home')
+
+                

@@ -26,8 +26,23 @@ class CartItem(models.Model):
 class Wishlist(models.Model):
     user        = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
     product     = models.ForeignKey(Product, on_delete=models.CASCADE,null=True)
-    cart      =  models.ForeignKey(Cart, on_delete=models.CASCADE, null=True)
+    cart        =  models.ForeignKey(Cart, on_delete=models.CASCADE, null=True)
     date        = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.product)
+    
+class Coupon(models.Model):
+    coupon      = models.CharField(max_length=20, null=True)
+    discount    = models.IntegerField(null=True)
+    is_active   = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.coupon
+
+class AppliedCoupon(models.Model):
+    user        = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)  
+    coupon      = models.ForeignKey(Coupon, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.coupon.coupon

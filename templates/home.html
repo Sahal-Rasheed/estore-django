@@ -31,14 +31,85 @@
 
 <!-- ========================= SECTION  ========================= -->
 <section class="section-name padding-y-sm">
-<div class="container">
+
+  <div class="container py-2">
+    <h3 class="section-title">Latest Arrivals</h3>
+    <div class="row py-4">
+      {% for f_product in f_products %}
+      <div class="col-md-3">
+        <div class="card card-product-grid">
+          <a href="{{f_product.get_product_cat_slug}}" class="img-wrap"> <img src="{{f_product.product_image.url }}">
+            <span class="badge badge-danger">New</span> </a>
+          <figcaption class="info-wrap">
+            <a href="{{f_product.get_product_cat_slug}}" class="title">{{f_product.product_name }}</a>
+            <div class="price mt-1">${{f_product.price|floatformat:2 }}</div> <!-- price-wrap.// -->
+          </figcaption>
+  
+        </div>
+      </div> <!-- col.// -->
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="container" id="custom-cards">
+    <h3 class="">Categories</h3>
+
+    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-4">
+      <div class="col">
+        <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow overlay" style="background-image: url('https://fs.npstatic.com/userfiles/7446224/image/AndroidPIT-best-smartphones-04-2019-w810h462.jpg'); background-size: cover;">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1 card-img-overlay" style="background-color: rgba(0,0,0,0.6);">
+            <h4 class=" mb-4 display-6 lh-1 fw-bold">Shop the latest smartphones with cutting-edge tech and stunning designs.</h4>
+            <ul class="d-flex list-unstyled mt-auto">
+              <a href="{% url 'category_products' category_slug='smart-phones' %}" class="btn btn-outline-light btn-block btn-lg font-weight-bolder">View</a>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg" style="background-image: url('https://www.nvidia.com/content/dam/en-zz/Solutions/ces-2023/40-series-laptops/geforce-rtx-40-series-laptops-og-1200x630.jpg');background-size: cover;">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1 card-img-overlay" style="background-color: rgba(0,0,0,0.5);">
+            <h4 class="mb-4 display-6 lh-1 fw-bold">Find your perfect match among our stylish and powerful laptops.</h4>
+            <ul class="d-flex list-unstyled mt-auto">
+              <a href="{% url 'category_products' category_slug='laptops' %}" class="btn btn-outline-light btn-block btn-lg font-weight-bolder">View</a>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg" style="background-image: url('https://assets3.thrillist.com/v1/image/2837139/414x310/crop;webp=auto;jpeg_quality=60;progressive.jpg');background-size: cover;">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1 card-img-overlay" style="background-color: rgba(0,0,0,0.6);">
+            <h4 class="mb-4 display-6 lh-1 fw-bold">From 4K Ultra HD models to curved screens and smart TVs, we've got it all here.</h4>
+            <ul class="d-flex list-unstyled mt-auto">
+              <a href="{% url 'category_products' category_slug='televisions' %}" class="btn btn-outline-light btn-block btn-lg font-weight-bolder">View</a>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg" style="background-image: url('https://static.independent.co.uk/2021/07/05/12/tablets.jpg?quality=75&width=1200&auto=webp');background-size: cover;">
+          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1" style="background-color: rgba(0,0,0,0.5);">
+            <h4 class="mb-4 display-6 lh-1 fw-bold">Find your perfect match among our stylish and lightweight tablets.</h4>
+            <ul class="d-flex list-unstyled mt-auto">
+              <a href="{% url 'category_products' category_slug='tablets' %}" class="btn btn-outline-light btn-block btn-lg font-weight-bolder">View</a>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div class="container py-1">
 
 <header class="section-heading">
 	<a href="{% url 'store' %}" class="btn btn-outline-dark float-right">See all</a>
-	<h3 class="section-title">Popular products</h3>
+	<h3 class="section-title">Top Products</h3>
 </header><!-- sect-heading -->
 
-<div class="row">
+<div class="row py-4">
 	{% for product in products %}
 	<div class="col-md-3">
 		<div class="card card-product-grid">
@@ -46,21 +117,89 @@
 			<figcaption class="info-wrap">
 				<a href="{{product.get_product_cat_slug}}" class="title">{{product.product_name }}</a>
 				<div class="price mt-1">${{product.price|floatformat:2 }}</div> <!-- price-wrap.// -->
-        <div class="">
+        <!-- <div class="">
           <span class="fa fa-star {% if product.average_rating.rating__avg > 0 %} checked {% endif %}"></span>
           <span class="fa fa-star {% if product.average_rating.rating__avg > 1 %} checked {% endif %}"></span>
           <span class="fa fa-star {% if product.average_rating.rating__avg > 2 %} checked {% endif %}"></span>
           <span class="fa fa-star {% if product.average_rating.rating__avg > 3 %} checked {% endif %}" ></span>
           <span class="fa fa-star {% if product.average_rating.rating__avg > 4 %} checked {% endif %}"></span>
-        </div>
+        </div> -->
 			</figcaption>
       
 		</div>
 	</div> <!-- col.// -->
 	{% endfor %}
 </div> <!-- row.// -->
-
 </div><!-- container // -->
+
+<div class="container py-1">
+  <h3 class="px-2">Flash Sale</h3>
+  <div class="row align-items-md-stretch px-2 py-3">
+    <div class="col-md-6">
+      <div class="h-100 p-5 text-white bg-dark rounded-3" style="background-image: url('https://i01.appmifile.com/webfile/globalimg/products/pc/redmi-note-9/section01-header.jpg'); background-size: 600px;">
+        <h2>Redmi Note 12 5g Series</h2>
+        <!-- <p>Swap the background-color utility and add a `.text-*` color utility to mix up the jumbotron look. Then, mix and match with additional component themes and more.</p> -->
+        <a href="store/smart-phones/redmi-note-12-pro-5g" class="btn btn-outline-light">Buy Now</a>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="h-100 p-5 text-white bg-dark rounded-3" style="background-image: url('https://www.xiaomitoday.com/wp-content/uploads/2021/10/Screenshot-2021-10-04-at-6.39.41-AM-min.png'); background-size: 670px;">
+        <h2>Redmi Note 11 Series</h2>
+        <!-- <p>Swap the background-color utility and add a `.text-*` color utility to mix up the jumbotron look. Then, mix and match with additional component themes and more.</p> -->
+        <a href="store/smart-phones/redmi-note-11-pro" class="btn btn-outline-light">Buy Now</a>
+      </div>
+    </div>
+</div>
+
+<div class="container py-2">
+  <h3>Featured Brands</h3>
+  <div class="row align-items-md-stretch py-4">
+    <div class="col-md-4">
+      <div class="h-100 p-5 text-light rounded-3" style="background-image:url('https://t2.tudocdn.net/616927?w=1920');background-size: cover;">
+          <h2>Redmi</h2>
+          <p class="mt-3">Explore the latest Redmi smartphones and experience powerful performance, stunning displays, and long-lasting battery life. Shop now and get unbeatable value for your money!</p>
+          <a href="search/?search=redmi" class="btn btn-outline-warning btn-lg mt-3">Shop Now</a>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="h-100 p-5 text-light rounded-3" style="background-image: url('https://www.shutterstock.com/image-photo/bangkok-thailand-mar-17-samsung-260nw-1938495280.jpg');background-size:550px;">
+        <h2>Samsung</h2>
+        <p class="mt-3">Discover premium Samsung smartphones with cutting-edge features, top specs, and beautiful design. Shop now and experience the best of Samsung technology!</p>
+        <a href="search/?search=samsung" class="btn btn-outline-warning btn-lg mt-3">Shop Now</a>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="h-100 p-5 text-light rounded-3" style="background-image: url('https://static.thairath.co.th/media/4DQpjUtzLUwmJZZSElikCHNw0jvgbi6ulJcWDC0RYDIr.jpg');background-size: cover;">
+        <h2>Apple</h2>
+        <p class="mt-3">Experience the power and elegance of iPhone with its stunning displays, powerful processors, and innovative features. Shop now and join the millions of satisfied Apple customers!</p>
+        <a href="search/?search=apple" class="btn btn-outline-warning btn-lg mt-3">Shop Now</a>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="row py-4">
+    {% for b_product in b_products %}
+    <div class="col-md-3">
+      <div class="card card-product-grid">
+        <a href="{{b_product.get_product_cat_slug}}" class="img-wrap"> <img src="{{b_product.product_image.url }}"> </a>
+        <figcaption class="info-wrap">
+          <a href="{{b_product.get_product_cat_slug}}" class="title">{{b_product.product_name }}</a>
+          <div class="price mt-1">${{b_product.price|floatformat:2 }}</div> <!-- price-wrap.// -->
+        </figcaption>
+      </div>
+    </div> <!-- col.// -->
+    {% endfor %}
+  </div>
+
+</div>
+
+
+
+
 </section>
 <!-- ========================= SECTION  END// ========================= -->
 

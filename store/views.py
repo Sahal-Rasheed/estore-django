@@ -8,16 +8,22 @@ from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.db.models import Q
 from cart.views import _cart_id
 from .forms import ReviewForm
+import random
 
 # Create your views here.
 
 def home(request):
-    products = Product.objects.all().filter(is_available=True)
+    products_list = list(Product.objects.all().filter(is_available=True))
+    products = random.sample(products_list, 8)
+    f_products = Product.objects.filter(category_id=1 ).order_by('-id')[:4]
+    b_products = Product.objects.filter(Q(product_name__icontains='redmi') | Q(product_name__icontains='samsung') | Q(product_name__icontains='apple')).order_by('-id')[:12]
     banners = Banner.objects.all().order_by('-id')
     first_banner = banners.first()
     banners = banners.exclude(id=first_banner.id)
     context = {
-        'products':products,
+        'products' : products,
+        'f_products' : f_products,
+        'b_products' : b_products,
         'banners' : banners,
         'first_banner' : first_banner
     }

@@ -85,9 +85,7 @@ def UserLogin(request):
                 pass
 
             login(request, user)
-            # messages.success(request, f' welcome {username} !!')
             next_url = request.META.get('HTTP_REFERER')
-            print(next_url)
             if '/cart/checkout/' in next_url :
                 return redirect('checkout')
             else:
@@ -172,6 +170,27 @@ def OtpEnter(request):
 
                 if verification_check.status == "approved":
                     user = Account.objects.get(phone_number=phone_number)
+                    if user:
+                        try:
+                            cart = Cart.objects.get(cart_id=_cart_id(request))
+                            guest_cart = CartItem.objects.filter(cart=cart)
+                            user_cart = CartItem.objects.filter(user=user)
+                            
+                            for gitem in guest_cart:
+                                for uitem in user_cart:
+                                    if gitem.product == uitem.product:
+                                        uitem.quantity += gitem.quantity
+                                        gitem.delete()
+                                        uitem.save()
+                                
+                            cart_item_exists = CartItem.objects.filter(cart=cart).exists()
+                            if cart_item_exists:
+                                cart_items = CartItem.objects.filter(cart=cart)
+                                for item in cart_items:
+                                    item.user = user
+                                    item.save()
+                        except:
+                            pass
                     login(request,user)
                     del request.session['phone_number']
                     return redirect('home')

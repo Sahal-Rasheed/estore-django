@@ -40,7 +40,7 @@ Estore is a basic ecommerce website that allows users to browse products, add th
 
 ### User Registration
 
-![Register](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/Register.png?token=GHSAT0AAAAAACAUDA33Y7FFWSHIUX5K4LFYZBS6HNQ)
+![Register](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/Register.png?raw=true)
 
 ### User Login
 

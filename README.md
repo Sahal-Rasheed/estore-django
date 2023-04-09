@@ -44,75 +44,75 @@ Estore is a basic ecommerce website that allows users to browse products, add th
 
 ### User Login
 
-![Login](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/Login.png?token=GHSAT0AAAAAACAUDA32UFOOAFCHR3ULJNE6ZBS6JVA)
+![Login](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/Login.png?raw=true)
 
 ### Home
 
-![Home](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/Home.png?token=GHSAT0AAAAAACAUDA33756BCA7R7X6NHS5MZBS6LGA)
+![Home](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/Home.png?raw=true)
 
 ### Store
 
-![Store](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/Store.png?token=GHSAT0AAAAAACAUDA33347J3VN7U76ZR2B4ZBS6MLA)
+![Store](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/Store.png?raw=true)
 
 ### Product Details
 
-![Product](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/Product%20Info.png?token=GHSAT0AAAAAACAUDA334AX2POTQGQQLJBWQZBS6NTQ)
+![Product](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/Product%20Info.png?raw=true)
 
 ### Cart
 
-![Cart](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/Cart.png?token=GHSAT0AAAAAACAUDA32I5KYN7R3IQCAUNDGZBS6RJA)
+![Cart](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/Cart.png?raw=true)
 
 ### Checkout
 
-![Checkout](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/Checkout.png?token=GHSAT0AAAAAACAUDA33VF25YS33AH5NEG3CZBS6QYQ)
+![Checkout](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/Checkout.png?raw=true)
 
 ### Payment
 
-![Payment](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/Payment.png?token=GHSAT0AAAAAACAUDA33RY65DYX7EFDMPNUKZBS6SQA)
+![Payment](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/Payment.png?raw=true)
 
 ### My Account
 
-![My Account](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/My%20Account.png?token=GHSAT0AAAAAACAUDA33ABYQT5DU4BQYXFSCZBS6TQQ)
+![My Account](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/My%20Account.png?raw=true)
 
 ### My Orders
 
-![My Orders](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/My%20Orders.png?token=GHSAT0AAAAAACAUDA33DNKJ22FNJZE34JEUZBS6UZA)
+![My Orders](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/My%20Orders.png?raw=true)
 
 ### Edit Profile
 
-![Edit Profile](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/Edit%20Profile.png?token=GHSAT0AAAAAACAUDA33UTJVLWM2RO6YS6RGZBS6V3Q)
+![Edit Profile](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/Edit%20Profile.png?raw=true)
 
 ### Admin Home
 
-![Admin Home](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/Admin%20Home.png?token=GHSAT0AAAAAACAUDA32I6MCURDOEJHUIZEQZBS6YAQ)
+![Admin Home](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/Admin%20Home.png?raw=true)
 
 ### Admin User Management
 
-![Admin User Management](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/User%20Table.png?token=GHSAT0AAAAAACAUDA33IZC6HUWPN6KBYLPWZBS62OQ)
+![Admin User Management](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/User%20Table.png?raw=true)
 
 ### Admin Product Management
 
-![Admin Product Management](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/Product%20Table.png?token=GHSAT0AAAAAACAUDA32XVRAJ4FQ2X4ZQ46EZBS64HA)
+![Admin Product Management](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/Product%20Table.png?raw=true)
 
 ### Admin Category Management
 
-![Admin Category Management](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/Category%20Table.png?token=GHSAT0AAAAAACAUDA32BJAVIUBKIRL2DBYMZBS67TA)
+![Admin Category Management](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/Category%20Table.png?raw=true)
 
 ### Admin Order Management
 
-![Admin Order Management](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/Order%20Table.png?token=GHSAT0AAAAAACAUDA32MLILPVYL6QAWVP6WZBS7ESQ)
+![Admin Order Management](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/Order%20Table.png?raw=true)
 
 ### Admin Coupon Management
 
-![Admin Coupon Management](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/Coupon%20Table.png?token=GHSAT0AAAAAACAUDA32CM76DCXJUDWB3OZMZBS7FJA)
+![Admin Coupon Management](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/Coupon%20Table.png?raw=true)
 
 ### Admin Sales Management
 
-![Admin Sales Management](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/Sales%20Table.png?token=GHSAT0AAAAAACAUDA33HYTGNCIBNQDUTCZWZBS7GAA)
+![Admin Sales Management](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/Sales%20Table.png?raw=true)
 
 ### Admin Banner Management
 
-![Admin Banner Management](https://raw.githubusercontent.com/Sahal-Rasheed/estore-django/main/static/Screenshots/Banner%20Table.png?token=GHSAT0AAAAAACAUDA33SLHSOWBL2IVETYUWZBS7HWA)
+![Admin Banner Management](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/Banner%20Table.png?raw=true)
 
 
 

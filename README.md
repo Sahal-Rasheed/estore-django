@@ -78,6 +78,10 @@ Estore is a basic ecommerce website that allows users to browse products, add th
 
 ![My Orders](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/My%20Orders.png?raw=true)
 
+### Order Tracking
+
+![Order Tracking](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/Order%20Tracking.png?raw=true)
+
 ### Edit Profile
 
 ![Edit Profile](https://github.com/Sahal-Rasheed/estore-django/blob/main/static/Screenshots/Edit%20Profile.png?raw=true)
